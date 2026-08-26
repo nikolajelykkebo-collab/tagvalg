@@ -91,7 +91,7 @@ export default function ResultatStep() {
                         <dt className="text-blue-800/80">Tagareal</dt>
                         <dd className="font-medium text-blue-900">
                             {data.beregning?.tagareal !== undefined
-                                ? `${data.beregning.tagareal.toFixed(1)} m²`
+                                ? `${data.beregning.tagareal.toFixed(2)} m²`
                                 : "-"}
                         </dd>
                     </div>

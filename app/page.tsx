@@ -10,23 +10,7 @@ import {
   Star,
 } from "lucide-react";
 
-const testimonials = [
-  {
-    quote: "Vi fik et klart overblik over budgettet på få minutter.",
-    name: "Peter Hansen",
-    city: "Roskilde",
-  },
-  {
-    quote: "Nemt, overskueligt og langt bedre end at gætte sig frem.",
-    name: "Marie Nielsen",
-    city: "Odense",
-  },
-  {
-    quote: "Et rigtig godt første skridt til vores tagprojekt.",
-    name: "Anders Jensen",
-    city: "Aarhus",
-  },
-];
+
 
 const faqs = [
   ["Hvordan beregnes prisen?", "Estimaten tager udgangspunkt i dit tagareal, tagtype og de valg, du foretager i beregneren. Den giver dig et realistisk budget at arbejde videre fra."],
@@ -61,7 +45,7 @@ export default function Page() {
           </div>
         </div>
         <div className="hero-visual" aria-label="Et moderne hus med nyt tag">
-          <div className="visual-stamp"><strong>4.9</strong><span><Star size={12} fill="currentColor" /> rating</span></div>
+          <div className="visual-stamp"><strong>Det' Nemt</strong></div>
           <div className="visual-caption"><span className="caption-dot" /> Beregnet ud fra danske boligdata</div>
         </div>
       </section>

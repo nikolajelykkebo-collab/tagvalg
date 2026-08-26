@@ -35,9 +35,11 @@ export default function BeregningStep() {
 
     const [tagareal, sætTagareal] =
         useState(
-            autoTagareal?.toString()
-                ?? data.beregning?.tagareal?.toString()
-                ?? "",
+            autoTagareal !== undefined
+                ? autoTagareal.toFixed(2)
+                : data.beregning?.tagareal !== undefined
+                ? data.beregning.tagareal.toFixed(2)
+                : "",
         );
 
     const [tagarealErRettetAfBruger, sætTagarealErRettetAfBruger] =
@@ -58,8 +60,9 @@ export default function BeregningStep() {
         );
 
         sætTagareal(
-            autoTagareal?.toString()
-                ?? "",
+            autoTagareal !== undefined
+                ? autoTagareal.toFixed(2)
+                : "",
         );
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,7 +184,7 @@ export default function BeregningStep() {
                         id="tagareal"
                         type="number"
                         min="0"
-                        step="0.1"
+                        step="0.01"
                         value={tagareal}
                         onChange={(event) =>
                             opdaterTagareal(

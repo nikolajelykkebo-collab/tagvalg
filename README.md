@@ -23,7 +23,9 @@ Vær' opmærksom på at det tager 15min efter at i har aktiveret nøglen før at
 3. Kør npm install i Root mappen (Tag-udregner-prod )
 
 
-4. Kør npm run dev for at starte app
+4. Kør "npm build"  og derefter "npm run dev" for at starte app
+
+5. Obs det kan godt tage noget tid første gang den skal  "compile"
 
 
 
