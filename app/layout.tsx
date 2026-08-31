@@ -12,6 +12,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Tagudregner",
   description: "Beregn dit nye tag",
+  robots: "noindex, nofollow",
 };
 
 export default function RootLayout({
