@@ -8,6 +8,7 @@ interface Props {
   kanGåTilbage: boolean;
   kanGåVidere: boolean;
   erSidsteTrin: boolean;
+  næsteKnapTekst?: string;
   vedTilbage: () => void;
   vedNæste: () => void;
 }
@@ -16,6 +17,7 @@ export default function WizardFooter({
   kanGåTilbage,
   kanGåVidere,
   erSidsteTrin,
+  næsteKnapTekst = "Næste",
   vedTilbage,
   vedNæste,
 }: Props) {
@@ -38,7 +40,7 @@ export default function WizardFooter({
         onClick={vedNæste}
         className="calculator-primary-button gap-1.5"
       >
-        {erSidsteTrin ? "Send" : "Næste"}
+        {næsteKnapTekst}
         {!erSidsteTrin && <ArrowRight className="size-4" />}
       </Button>
     </div>

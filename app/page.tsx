@@ -24,7 +24,7 @@ export default function Page() {
       <nav className="site-nav" aria-label="Hovednavigation">
         <Link className="brand" href="/">
           <span className="brand-mark"><House size={18} strokeWidth={2.5} /></span>
-          <span>Tag<span>udregner</span></span>
+          <span>Tag<span>valg</span></span>
         </Link>
         <div className="nav-links">
           <a href="#saadan-virker-det">Sådan virker det</a>

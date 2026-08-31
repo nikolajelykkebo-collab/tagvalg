@@ -99,6 +99,7 @@ const startData: BeregnerData = {
         navn: "",
         email: "",
         telefon: "",
+        ønskerOpkald: false,
     },
 
 };

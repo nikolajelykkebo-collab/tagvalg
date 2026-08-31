@@ -56,6 +56,18 @@ export default function TagStep() {
             data.tag?.hældning !== undefined,
         );
 
+    const [tilstand, sætTilstand] =
+        useState(
+            data.tag?.tilstand
+                ?? "",
+        );
+
+    const [tidshorisont, sætTidshorisont] =
+        useState(
+            data.tag?.tidshorisont
+                ?? "",
+        );
+
     useEffect(() => {
 
         if (
@@ -100,10 +112,16 @@ export default function TagStep() {
                     ? Number(hældning)
                     : undefined,
 
+            tilstand:
+                tilstand || undefined,
+
+            tidshorisont:
+                tidshorisont || undefined,
+
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tagtype, bebyggetAreal, hældning]);
+    }, [tagtype, bebyggetAreal, hældning, tilstand, tidshorisont]);
 
     function opdaterTagtype(
         værdi: string,
@@ -321,6 +339,94 @@ export default function TagStep() {
                         </p>
 
                     )}
+
+                </div>
+
+                {/* Tagets tilstand */}
+
+                <div>
+
+                    <label
+                        htmlFor="tag-tilstand"
+                        className="mb-2 block text-sm font-semibold text-slate-900"
+                    >
+                        Hvordan er tagets tilstand?
+                    </label>
+
+                    <select
+                        id="tag-tilstand"
+                        value={tilstand}
+                        onChange={(event) =>
+                            sætTilstand(
+                                event.target.value,
+                            )
+                        }
+                        className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    >
+
+                        <option value="">
+                            Vælg tagets tilstand
+                        </option>
+
+                        <option value="Akut skade">
+                            Akut skade
+                        </option>
+
+                        <option value="Slidt">
+                            Slidt
+                        </option>
+
+                        <option value="Forebyggende">
+                            Forebyggende
+                        </option>
+
+                    </select>
+
+                </div>
+
+                {/* Tidshorisont */}
+
+                <div>
+
+                    <label
+                        htmlFor="tag-tidshorisont"
+                        className="mb-2 block text-sm font-semibold text-slate-900"
+                    >
+                        Hvornår regner du med at gå i gang?
+                    </label>
+
+                    <select
+                        id="tag-tidshorisont"
+                        value={tidshorisont}
+                        onChange={(event) =>
+                            sætTidshorisont(
+                                event.target.value,
+                            )
+                        }
+                        className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    >
+
+                        <option value="">
+                            Vælg tidshorisont
+                        </option>
+
+                        <option value="Under 1 md">
+                            Under 1 md
+                        </option>
+
+                        <option value="1-3 mdr">
+                            1-3 mdr
+                        </option>
+
+                        <option value="3-6 mdr">
+                            3-6 mdr
+                        </option>
+
+                        <option value="Senere">
+                            Senere
+                        </option>
+
+                    </select>
 
                 </div>
 

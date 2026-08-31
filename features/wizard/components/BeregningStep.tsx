@@ -257,43 +257,6 @@ export default function BeregningStep() {
 
             </div>
 
-            {data.beregning?.pris !== undefined && (
-
-                <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5">
-
-                    <p className="text-sm font-medium text-blue-900">
-                        Estimeret pris
-                    </p>
-
-                    <p className="mt-1 text-3xl font-bold tracking-tight text-blue-700">
-                        {data.beregning.pris.toLocaleString("da-DK", {
-                            maximumFractionDigits: 0,
-                        })}{" "}
-                        kr.
-                    </p>
-
-                    <p className="mt-2 text-sm text-blue-800/80">
-                        Prisinterval:{" "}
-                        {data.beregning.prisMin?.toLocaleString("da-DK", {
-                            maximumFractionDigits: 0,
-                        })}{" "}
-                        – {" "}
-                        {data.beregning.prisMax?.toLocaleString("da-DK", {
-                            maximumFractionDigits: 0,
-                        })}{" "}
-                        kr.
-                    </p>
-
-                    <p className="mt-3 flex items-start gap-1.5 text-xs text-blue-800/70">
-                        <Info className="mt-0.5 size-3.5 shrink-0" />
-                        Prisen er et estimat baseret på markedets
-                        prisinterval pr. m² for den valgte tagtype.
-                    </p>
-
-                </div>
-
-            )}
-
         </section>
 
     );

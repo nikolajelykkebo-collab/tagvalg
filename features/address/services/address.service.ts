@@ -43,6 +43,10 @@ interface ApiAdresse {
 
     bygningId: string | null;
 
+    postnummer: string | null;
+
+    postdistrikt: string | null;
+
 }
 
 interface ApiAdresseResultat {
@@ -129,6 +133,14 @@ function mapAdresse(
 
         darId:
             adresse.id,
+
+        postnummer:
+            adresse.postnummer
+                ?? undefined,
+
+        postdistrikt:
+            adresse.postdistrikt
+                ?? undefined,
 
     };
 

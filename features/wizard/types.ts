@@ -3,7 +3,8 @@ export enum Trin {
   Ejendom = 1,
   Tag = 2,
   Beregning = 3,
-  Resultat = 4,
+  Kontakt = 4,
+  Resultat = 5,
 }
 
 export interface AdresseData {
@@ -95,6 +96,10 @@ export interface TagData {
   kviste?: number;
 
   ovenlysvinduer?: number;
+
+  tilstand?: string;
+
+  tidshorisont?: string;
 }
 
 export interface BeregningData {
@@ -129,6 +134,8 @@ export interface KontaktData {
   email: string;
 
   telefon: string;
+
+  ønskerOpkald: boolean;
 }
 
 export interface BeregnerData {

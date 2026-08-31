@@ -5,6 +5,7 @@ import TagStep from "../../../features/address/components/TagStep";
 
 import EjendomStep from "./EjendomStep";
 import BeregningStep from "./BeregningStep";
+import KontaktStep from "./KontaktStep";
 import ResultatStep from "./ResultatStep";
 
 import { Trin } from "../types";
@@ -34,6 +35,10 @@ export default function StepRenderer({
         case Trin.Beregning:
 
             return <BeregningStep />;
+
+        case Trin.Kontakt:
+
+            return <KontaktStep />;
 
         case Trin.Resultat:
 

@@ -3,6 +3,7 @@ import {
   Building2,
   Layers,
   Calculator,
+  Mail,
   PartyPopper,
   type LucideIcon,
 } from "lucide-react";
@@ -14,6 +15,7 @@ export const trin = [
   Trin.Ejendom,
   Trin.Tag,
   Trin.Beregning,
+  Trin.Kontakt,
   Trin.Resultat,
 ] as const;
 
@@ -40,6 +42,11 @@ export const trinInfo: Record<
   [Trin.Beregning]: {
     label: "Beregning",
     ikon: Calculator,
+  },
+
+  [Trin.Kontakt]: {
+    label: "Kontakt",
+    ikon: Mail,
   },
 
   [Trin.Resultat]: {

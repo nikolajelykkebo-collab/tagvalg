@@ -160,4 +160,8 @@ export interface Adresse {
 
     bygningId: string | null;
 
+    postnummer: string | null;
+
+    postdistrikt: string | null;
+
 }
