@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Tagudregner",
   description: "Beregn dit nye tag",
   robots: "noindex, nofollow",
+  icons: {
+    icon: '/tagvalg-fav.png',
+  },
 };
 
 export default function RootLayout({
