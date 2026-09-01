@@ -392,6 +392,16 @@ export default function BeregningStep() {
                                     {TAGTYPE_LABELS[værdi]}
                                 </span>
 
+                                <span
+                                    className={`text-xs ${
+                                        erValgt
+                                            ? "text-emerald-700"
+                                            : "text-slate-500"
+                                    }`}
+                                >
+                                    {TAGPRIS_PR_KVADRATMETER[værdi]} kr./m²
+                                </span>
+
                             </button>
 
                         );
