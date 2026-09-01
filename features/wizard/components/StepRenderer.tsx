@@ -10,19 +10,23 @@ import ResultatStep from "./ResultatStep";
 
 import { Trin } from "../types";
 
+import type { AdresseSøgning } from "../../../features/address/hooks/useAddress";
+
 interface Props {
     aktivtTrin: Trin;
+    adresseSøgning: AdresseSøgning;
 }
 
 export default function StepRenderer({
     aktivtTrin,
+    adresseSøgning,
 }: Props) {
 
     switch (aktivtTrin) {
 
         case Trin.Adresse:
 
-            return <AddressStep />;
+            return <AddressStep adresseSøgning={adresseSøgning} />;
 
         case Trin.Ejendom:
 

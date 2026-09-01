@@ -7,6 +7,8 @@ import { mapAdresse } from "../dar/mappers/adresse.mapper";
 
 import { adresseService } from "../dar/services/adresse.service";
 import { husnummerService } from "../dar/services/husnummer.service";
+import { adressepunktService } from "../dar/services/adressepunkt.service";
+import type { DarAdressepunktNode } from "../dar/dar.types";
 
 import { bygningService } from "../bbr/services/bygning.service";
 import { mapBygning } from "../bbr/mappers/bbr.mapper";
@@ -26,6 +28,41 @@ import {
 } from "../geodanmark/services/bygning.service";
 
 export class DatafordelerService {
+
+    /**
+     * Henter et adressepunkts koordinater. Fejler aldrig ud —
+     * koordinater er et "nice to have" (bl.a. til luftfoto),
+     * så resten af adresseopslaget skal ikke vælte, hvis det
+     * ikke kan hentes.
+     */
+    private async hentAdressepunktSikkert(
+        adgangspunkt: string | null
+    ): Promise<DarAdressepunktNode | null> {
+
+        if (!adgangspunkt) {
+
+            return null;
+
+        }
+
+        try {
+
+            return await adressepunktService.hentAdressepunkt(
+                adgangspunkt
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "Adressepunkt kunne ikke hentes; fortsætter uden koordinater.",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
 
     /**
      * Henter adresseforslag til autocomplete.
@@ -75,9 +112,15 @@ export class DatafordelerService {
                 adresse.husnummer
             );
 
+        const adressepunkt =
+            await this.hentAdressepunktSikkert(
+                husnummer.adgangspunkt
+            );
+
         return mapAdresse(
             adresse,
-            husnummer
+            husnummer,
+            adressepunkt
         );
 
     }
@@ -130,10 +173,16 @@ export class DatafordelerService {
                 adresse.husnummer
             );
 
+        const adressepunkt =
+            await this.hentAdressepunktSikkert(
+                husnummer.adgangspunkt
+            );
+
         const mappedAdresse =
             mapAdresse(
                 adresse,
-                husnummer
+                husnummer,
+                adressepunkt
             );
 
         const darBygning =

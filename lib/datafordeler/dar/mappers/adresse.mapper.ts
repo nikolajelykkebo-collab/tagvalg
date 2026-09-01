@@ -3,6 +3,7 @@ import {
     AdresseForslag,
     DarAdresseForslagNode,
     DarAdresseNode,
+    DarAdressepunktNode,
     DarHusnummerNode,
 } from "../dar.types";
 
@@ -76,15 +77,69 @@ function udtrækPostnummerOgPostdistrikt(
 
 }
 
+// Matcher WKT-formatet DAR leverer positioner i,
+// fx "POINT (535990.31 6163547.98)".
+const WKT_POINT_REGEX =
+    /POINT\s*\(\s*([\d.-]+)\s+([\d.-]+)\s*\)/i;
+
+/**
+ * Udtrækker x/y-koordinater (EPSG:25832) fra et adressepunkts
+ * WKT-position, hvis muligt.
+ */
+function udtrækKoordinater(
+    adressepunkt: DarAdressepunktNode | null
+): {
+    x: number;
+    y: number;
+} | null {
+
+    const wkt =
+        adressepunkt?.position?.wkt;
+
+    if (!wkt) {
+
+        return null;
+
+    }
+
+    const match =
+        wkt.match(
+            WKT_POINT_REGEX
+        );
+
+    if (!match) {
+
+        return null;
+
+    }
+
+    return {
+
+        x:
+            Number(
+                match[1]
+            ),
+
+        y:
+            Number(
+                match[2]
+            ),
+
+    };
+
+}
+
 /**
  * Samler de nødvendige adresseoplysninger fra:
  *
  * DAR_Adresse
  * DAR_Husnummer
+ * DAR_Adressepunkt (valgfrit, til koordinater)
  */
 export function mapAdresse(
     adresse: DarAdresseNode,
-    husnummer: DarHusnummerNode
+    husnummer: DarHusnummerNode,
+    adressepunkt: DarAdressepunktNode | null = null
 ): Adresse {
 
     const udtrukket =
@@ -129,6 +184,11 @@ export function mapAdresse(
         // af adressebetegnelsen.
         postdistrikt:
             udtrukket.postdistrikt,
+
+        koordinater:
+            udtrækKoordinater(
+                adressepunkt
+            ),
 
     };
 

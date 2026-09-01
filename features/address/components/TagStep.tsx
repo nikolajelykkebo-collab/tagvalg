@@ -16,6 +16,9 @@ import {
     mapStandardHældning,
 } from "../../../lib/datafordeler/bbr/mappers/bbr.mapper";
 
+import { sporFeltUdfyldt } from "../../wizard/lib/analytics";
+import { Trin } from "../../wizard/types";
+
 export default function TagStep() {
 
     const {
@@ -131,6 +134,11 @@ export default function TagStep() {
             værdi,
         );
 
+        sporFeltUdfyldt(
+            "tagtype",
+            Trin.Tag,
+        );
+
         // Foreslå en typisk hældning for tagtypen,
         // hvis brugeren ikke selv har angivet en.
         const nyHældning =
@@ -165,6 +173,36 @@ export default function TagStep() {
 
         sætHældningErRettetAfBruger(
             true,
+        );
+
+    }
+
+    function opdaterTilstand(
+        værdi: string,
+    ) {
+
+        sætTilstand(
+            værdi,
+        );
+
+        sporFeltUdfyldt(
+            "tilstand",
+            Trin.Tag,
+        );
+
+    }
+
+    function opdaterTidshorisont(
+        værdi: string,
+    ) {
+
+        sætTidshorisont(
+            værdi,
+        );
+
+        sporFeltUdfyldt(
+            "tidshorisont",
+            Trin.Tag,
         );
 
     }
@@ -277,6 +315,12 @@ export default function TagStep() {
                                     event.target.value,
                                 )
                             }
+                            onBlur={() =>
+                                sporFeltUdfyldt(
+                                    "bebygget_areal",
+                                    Trin.Tag,
+                                )
+                            }
                             className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                         />
 
@@ -320,6 +364,12 @@ export default function TagStep() {
                                     event.target.value,
                                 )
                             }
+                            onBlur={() =>
+                                sporFeltUdfyldt(
+                                    "haeldning",
+                                    Trin.Tag,
+                                )
+                            }
                             className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                         />
 
@@ -357,7 +407,7 @@ export default function TagStep() {
                         id="tag-tilstand"
                         value={tilstand}
                         onChange={(event) =>
-                            sætTilstand(
+                            opdaterTilstand(
                                 event.target.value,
                             )
                         }
@@ -399,7 +449,7 @@ export default function TagStep() {
                         id="tag-tidshorisont"
                         value={tidshorisont}
                         onChange={(event) =>
-                            sætTidshorisont(
+                            opdaterTidshorisont(
                                 event.target.value,
                             )
                         }

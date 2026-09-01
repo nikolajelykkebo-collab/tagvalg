@@ -1,18 +1,41 @@
 import Link from "next/link";
-import { ArrowRight, House } from "lucide-react";
+
+import Logo from "./Logo";
+
+const navLinks = [
+  { href: "#saadan-virker-det", label: "Sådan virker det" },
+  { href: "#om-os", label: "Om os" },
+  { href: "/beregner", label: "Priser" },
+];
 
 export default function Header() {
   return (
-    <nav className="site-nav" aria-label="Hovednavigation">
-      <Link className="brand" href="/">
-        <span className="brand-mark"><House size={18} strokeWidth={2.5} /></span>
-        <span>Tag<span>valg</span></span>
-      </Link>
-      <div className="nav-links">
-        <a href="#saadan-virker-det">Sådan virker det</a>
-        <a href="#faq">Spørgsmål</a>
-        <Link className="nav-cta" href="/beregner">Beregn pris <ArrowRight size={16} /></Link>
+    <header className="border-b border-gray-100 bg-white">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
+        <Logo height={36} priority />
+
+        <nav
+          aria-label="Hovednavigation"
+          className="hidden items-center gap-8 text-sm font-medium text-gray-600 md:flex"
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="transition-colors hover:text-emerald-700"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <a
+          href="tel:31414524"
+          className="inline-flex shrink-0 items-center rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
+        >
+          Ring 31 41 45 24
+        </a>
       </div>
-    </nav>
+    </header>
   );
 }

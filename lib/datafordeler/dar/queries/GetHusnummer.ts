@@ -24,6 +24,7 @@ query GetHusnummer(
             postnummer
             kommuneinddeling
             status
+            adgangspunkt
         }
     }
 }

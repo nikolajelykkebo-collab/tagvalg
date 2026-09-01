@@ -43,6 +43,22 @@ export interface AdresseForslag {
 
 /**
  * ============================================================================
+ * DAR - Postnummer
+ * ============================================================================
+ */
+
+export interface DarPostnummerNode {
+    id_lokalId: string;
+
+    navn: string;
+}
+
+export interface GetPostnummerVedNavnResponse {
+    DAR_Postnummer: GraphQLConnection<DarPostnummerNode>;
+}
+
+/**
+ * ============================================================================
  * DAR - Adresse
  * ============================================================================
  */
@@ -163,5 +179,13 @@ export interface Adresse {
     postnummer: string | null;
 
     postdistrikt: string | null;
+
+    // Koordinater i EPSG:25832 (UTM zone 32N / ETRS89), som
+    // DAR selv leverer dem — bruges bl.a. til at hente et
+    // luftfoto centreret om adressen.
+    koordinater: {
+        x: number;
+        y: number;
+    } | null;
 
 }

@@ -1,69 +1,167 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  ChevronDown,
-  Clock3,
-  House,
-  ShieldCheck,
-  Sparkles,
-  Star,
-} from "lucide-react";
 
 import Header from "../components/Header";
+import Logo from "../components/Logo";
+import HeroAddressSearch from "../features/address/components/HeroAddressSearch";
 
+const fordele = [
+  {
+    nummer: "01",
+    titel: "Automatisk beregning",
+    tekst:
+      "Få en pris du faktisk kan bruge som udgangspunkt for dit budget — beregnet direkte ud fra din adresse.",
+  },
+  {
+    nummer: "02",
+    titel: "100% gratis",
+    tekst:
+      "Brug beregneren så mange gange du vil, helt uden beregning. Gem og send dine overslag videre.",
+  },
+  {
+    nummer: "03",
+    titel: "Alle tagtyper",
+    tekst:
+      "Tegl, beton, stål eller tagpap — beregneren dækker de mest almindelige tagløsninger på markedet.",
+  },
+];
 
-
-const faqs = [
-  ["Hvordan beregnes prisen?", "Estimaten tager udgangspunkt i dit tagareal, tagtype og de valg, du foretager i beregneren. Den giver dig et realistisk budget at arbejde videre fra."],
-  ["Er beregningen gratis?", "Ja. Du kan bruge beregneren gratis og uden forpligtelser."],
-  ["Hvor lang tid tager det?", "De fleste er igennem på omkring to minutter. Har du din adresse ved hånden, går det endnu hurtigere."],
+const styrker = [
+  {
+    titel: "Høj kvalitet",
+    tekst:
+      "Dedikeret team med svendebrev og 30 års samlet erfaring i tagbranchen.",
+  },
+  {
+    titel: "Personlig service",
+    tekst:
+      "Løbende dialog gennem hele forløbet, så du undgår unødvendige overraskelser.",
+  },
+  {
+    titel: "God rådgivning",
+    tekst:
+      "Vi starter altid med grundig rådgivning, så vi sammen kan lægge den rette plan.",
+  },
 ];
 
 export default function Page() {
   return (
-    <main className="landing-page">
+    <main className="bg-white">
       <Header />
 
-      <section className="hero-section">
-        <div className="hero-copy">
-          <div className="eyebrow"><Sparkles size={15} /> Din genvej til et bedre tagprojekt</div>
-          <h1>Hvad koster dit <em>nye tag?</em></h1>
-          <p className="hero-lead">Få et realistisk prisestimat på få minutter. Vi bruger din adresse og husets data, så du kan planlægge med ro i maven.</p>
-          <Link className="primary-button" href="/beregner">Start din beregning <ArrowRight size={19} /></Link>
-          <div className="hero-notes">
-            <span><Check size={15} /> Gratis og anonym</span>
-            <span><Check size={15} /> Svar på 2 minutter</span>
+      {/* Hero */}
+      <section className="px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center rounded-full bg-emerald-50 px-4 py-1.5 text-xs font-semibold text-emerald-700">
+            100% gratis · Uforpligtende
+          </span>
+
+          <h1 className="mt-6 text-xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl">
+            <span className="block whitespace-nowrap">Beregn pris på nyt tag</span>
+            <span className="block whitespace-nowrap text-emerald-700">på kun 30 sekunder</span>
+          </h1>
+
+          <p className="mt-6 text-base text-gray-500 sm:text-lg">
+            Indtast din adresse og få et gratis prisoverslag på dit nye
+            kvalitetstag — uanset tagtype.
+          </p>
+
+          <div className="mt-8">
+            <HeroAddressSearch />
+          </div>
+
+          <p className="mt-5 text-xs font-medium text-gray-400">
+            Ingen forpligtelser · Svar med det samme · Bruges af 1.000+ boligejere
+          </p>
+        </div>
+      </section>
+
+      {/* Hvorfor bruge vores tagberegner */}
+      <section id="saadan-virker-det" className="bg-stone-50 px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-500">
+            Hvorfor bruge vores tagberegner?
+          </p>
+
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {fordele.map((fordel) => (
+              <div
+                key={fordel.nummer}
+                className="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm"
+              >
+                <span className="inline-flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-sm font-bold text-emerald-800">
+                  {fordel.nummer}
+                </span>
+
+                <h3 className="mt-5 text-lg font-bold text-gray-900">
+                  {fordel.titel}
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                  {fordel.tekst}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="hero-visual" aria-label="Et moderne hus med nyt tag">
-          <div className="visual-stamp"><strong>Det' Nemt</strong></div>
-          <div className="visual-caption"><span className="caption-dot" /> Beregnet ud fra danske boligdata</div>
+      </section>
+
+      {/* Hvorfor skal du vælge os */}
+      <section id="om-os" className="bg-white px-6 py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-500">
+            Hvorfor skal du vælge os?
+          </p>
+
+          <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3">
+            {styrker.map((styrke) => (
+              <div key={styrke.titel}>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {styrke.titel}
+                </h3>
+
+                <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                  {styrke.tekst}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
+      {/* CTA-banner */}
+      <section className="px-6 pb-20 sm:pb-24">
+        <div className="mx-auto max-w-6xl rounded-3xl bg-emerald-900 px-8 py-12 sm:px-12">
+          <div className="flex flex-col items-center gap-8 text-center sm:flex-row sm:justify-between sm:text-left">
+            <div>
+              <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                Klar til at se din pris?
+              </h2>
 
-      <section className="process-section" id="saadan-virker-det">
-        <div className="section-intro"><p className="section-kicker">Fra spørgsmål til overblik</p><h2>Et bedre udgangspunkt<br />for dit næste tag.</h2></div>
-        <div className="process-grid">
-          <article><span className="step-number">01</span><House size={25} /><h3>Find din bolig</h3><p>Indtast din adresse, så henter vi de vigtigste boligdata automatisk.</p></article>
-          <article><span className="step-number">02</span><Sparkles size={25} /><h3>Fortæl om taget</h3><p>Vælg tagtype og tilpas de detaljer, der betyder noget for dit projekt.</p></article>
-          <article><span className="step-number">03</span><Clock3 size={25} /><h3>Se din pris</h3><p>Få et konkret prisestimat, du kan bruge til at komme trygt videre.</p></article>
+              <p className="mt-2 text-sm text-emerald-100">
+                Det tager under et minut, og du forpligter dig til ingenting.
+              </p>
+            </div>
+
+            <Link
+              href="/beregner"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-emerald-900 transition-colors hover:bg-emerald-50"
+            >
+              Beregn pris nu →
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="estimate-section">
-        <div><p className="section-kicker">Tag beslutningen med dig</p><h2>Du behøver ikke kende<br />alle svarene endnu.</h2><p>Et nyt tag er en stor beslutning. Derfor starter vi med et overslag, der gør mulighederne tydelige, før du tager kontakt til en håndværker.</p><Link className="text-link" href="/beregner">Beregn din pris <ArrowRight size={17} /></Link></div>
-        <div className="estimate-card"><div className="mini-top"><span>Dit prisestimat</span><span className="live-dot">● Opdateret</span></div><div className="estimate-price">ca. 186.000 <small>kr.</small></div><div className="estimate-line"><span /> <span /> <span /> <span /> <span /></div><div className="estimate-foot"><span>Typisk interval</span><strong>150.000 - 225.000 kr.</strong></div></div>
-      </section>
+      {/* Footer */}
+      <footer className="border-t border-gray-100 px-6 py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
+          <Logo height={28} />
 
-     
-
-      <section className="faq-section" id="faq"><div><p className="section-kicker">Godt at vide</p><h2>Spørgsmål til<br />beregningen?</h2></div><div className="faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} /></summary><p>{answer}</p></details>)}</div></section>
-
-      <section className="final-cta"><p className="section-kicker">Klar til at komme videre?</p><h2>Start med et prisestimat,<br /><em>og få ro på projektet.</em></h2><Link className="primary-button light-button" href="/beregner">Beregn pris på dit tag <ArrowRight size={19} /></Link></section>
-
-      <footer className="site-footer"><Link className="brand" href="/"><span className="brand-mark"><House size={18} /></span><span>Tag<span>udregner</span></span></Link><p>Et bedre overblik over dit næste tag.</p><span>© 2026 Tagudregner</span></footer>
+          <p className="text-xs text-gray-500">
+            © 2026 Tagvalg · CVR 00000000 · Vejle
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }

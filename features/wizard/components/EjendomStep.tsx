@@ -4,6 +4,8 @@ import { Building2, MapPin } from "lucide-react";
 
 import { useWizard } from "../hooks/useWizard";
 
+import Ortofoto from "./Ortofoto";
+
 export default function EjendomStep() {
 
     const {
@@ -117,6 +119,24 @@ export default function EjendomStep() {
                 )}
 
             </div>
+
+            {data.adresse?.koordinater && (
+
+                <div className="rounded-xl border border-slate-200 p-4">
+
+                    <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900">
+                        <MapPin className="size-4 text-slate-400" />
+                        Luftfoto
+                    </h3>
+
+                    <Ortofoto
+                        x={data.adresse.koordinater.x}
+                        y={data.adresse.koordinater.y}
+                    />
+
+                </div>
+
+            )}
 
         </section>
     );

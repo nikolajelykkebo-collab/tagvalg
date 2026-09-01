@@ -15,6 +15,9 @@ import {
     TAGTYPE_LABELS,
 } from "../constants/tagpriser";
 
+import { sporFeltUdfyldt } from "../lib/analytics";
+import { Trin } from "../types";
+
 export default function BeregningStep() {
 
     const {
@@ -144,6 +147,21 @@ export default function BeregningStep() {
 
     }
 
+    function opdaterValgtTagtype(
+        værdi: string,
+    ) {
+
+        sætValgtTagtype(
+            værdi,
+        );
+
+        sporFeltUdfyldt(
+            "valgt_tagtype",
+            Trin.Beregning,
+        );
+
+    }
+
     return (
 
         <section className="space-y-6">
@@ -191,6 +209,12 @@ export default function BeregningStep() {
                                 event.target.value,
                             )
                         }
+                        onBlur={() =>
+                            sporFeltUdfyldt(
+                                "tagareal",
+                                Trin.Beregning,
+                            )
+                        }
                         className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     />
 
@@ -227,7 +251,7 @@ export default function BeregningStep() {
                     id="onsket-tagtype"
                     value={valgtTagtype}
                     onChange={(event) =>
-                        sætValgtTagtype(
+                        opdaterValgtTagtype(
                             event.target.value,
                         )
                     }

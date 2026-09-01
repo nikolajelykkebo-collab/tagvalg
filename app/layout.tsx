@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google";
 import Script from 'next/script';
 import "./globals.css";
 
+import { BeregnerProvider } from "../features/wizard/context/WizardContext";
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -37,7 +39,9 @@ export default function RootLayout({
           <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W8Z6DB33"
           height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe>
         </noscript>
-        {children}
+        <BeregnerProvider>
+          {children}
+        </BeregnerProvider>
       </body>
     </html>
   );

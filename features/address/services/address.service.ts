@@ -47,6 +47,11 @@ interface ApiAdresse {
 
     postdistrikt: string | null;
 
+    koordinater: {
+        x: number;
+        y: number;
+    } | null;
+
 }
 
 interface ApiAdresseResultat {
@@ -140,6 +145,10 @@ function mapAdresse(
 
         postdistrikt:
             adresse.postdistrikt
+                ?? undefined,
+
+        koordinater:
+            adresse.koordinater
                 ?? undefined,
 
     };

@@ -1,16 +1,25 @@
 "use client";
 
+import type { FormEvent } from "react";
+
 import { Home, Loader2, TriangleAlert } from "lucide-react";
 
 import AddressInput from "./AddressInput";
 import AddressSuggestions from "./AddressSuggestions";
 
-import { useAddress } from "../hooks/useAddress";
 import { useWizard } from "../../wizard/hooks/useWizard";
 
 import type { AdresseForslag } from "../types";
+import type { AdresseResultat } from "../services/address.service";
+import type { AdresseSøgning } from "../hooks/useAddress";
 
-export default function AddressStep() {
+interface Props {
+    adresseSøgning: AdresseSøgning;
+}
+
+export default function AddressStep({
+    adresseSøgning,
+}: Props) {
 
     const {
         adresse,
@@ -19,7 +28,8 @@ export default function AddressStep() {
         fejl,
         opdaterAdresse,
         vælgAdresse,
-    } = useAddress();
+        søgOgVælgAdresse,
+    } = adresseSøgning;
 
     const {
         opdaterAdresse: gemAdresse,
@@ -27,6 +37,34 @@ export default function AddressStep() {
         opdaterEjendom: gemEjendom,
         næsteTrin,
     } = useWizard();
+
+    function gemOgFortsæt(
+        resultat: AdresseResultat,
+    ) {
+
+        gemAdresse(
+            resultat.adresse,
+        );
+
+        if (resultat.bygning) {
+
+            gemBygning(
+                resultat.bygning,
+            );
+
+        }
+
+        if (resultat.ejendom) {
+
+            gemEjendom(
+                resultat.ejendom,
+            );
+
+        }
+
+        næsteTrin();
+
+    }
 
     async function håndterAdresseValg(
         forslag: AdresseForslag,
@@ -39,30 +77,46 @@ export default function AddressStep() {
                     forslag,
                 );
 
-            gemAdresse(
-                resultat.adresse,
+            gemOgFortsæt(
+                resultat,
             );
-
-            if (resultat.bygning) {
-
-                gemBygning(
-                    resultat.bygning,
-                );
-
-            }
-
-            if (resultat.ejendom) {
-
-                gemEjendom(
-                    resultat.ejendom,
-                );
-
-            }
-
-            næsteTrin();
 
         } catch (error) {
 
+            console.error(
+                error,
+            );
+
+        }
+
+    }
+
+    async function håndterSubmit(
+        event: FormEvent<HTMLFormElement>,
+    ) {
+
+        event.preventDefault();
+
+        if (!adresse.trim()) {
+            return;
+        }
+
+        try {
+
+            // Brugeren har ikke valgt et forslag fra
+            // dropdown-listen, så vi slår den indtastede
+            // tekst op direkte mod DAR.
+            const resultat =
+                await søgOgVælgAdresse();
+
+            gemOgFortsæt(
+                resultat,
+            );
+
+        } catch (error) {
+
+            // Fejlen er allerede gemt via useAddress
+            // og vises til brugeren under feltet.
             console.error(
                 error,
             );
@@ -96,10 +150,14 @@ export default function AddressStep() {
 
             </div>
 
-            <AddressInput
-                værdi={adresse}
-                vedÆndring={opdaterAdresse}
-            />
+            <form onSubmit={håndterSubmit}>
+
+                <AddressInput
+                    værdi={adresse}
+                    vedÆndring={opdaterAdresse}
+                />
+
+            </form>
 
             {fejl && (
 

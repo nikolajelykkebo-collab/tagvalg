@@ -11,6 +11,9 @@ import { Lock, Mail } from "lucide-react";
 
 import { useWizard } from "../hooks/useWizard";
 
+import { sporFeltUdfyldt } from "../lib/analytics";
+import { Trin } from "../types";
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function KontaktStep() {
@@ -165,6 +168,12 @@ export default function KontaktStep() {
                             event.target.value,
                         )
                     }
+                    onBlur={() =>
+                        sporFeltUdfyldt(
+                            "navn",
+                            Trin.Kontakt,
+                        )
+                    }
                     placeholder="Dit navn"
                     className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                 />
@@ -189,11 +198,18 @@ export default function KontaktStep() {
                             event.target.value,
                         )
                     }
-                    onBlur={() =>
+                    onBlur={() => {
+
                         sætEmailErRørt(
                             true,
-                        )
-                    }
+                        );
+
+                        sporFeltUdfyldt(
+                            "email",
+                            Trin.Kontakt,
+                        );
+
+                    }}
                     placeholder="din@email.dk"
                     className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:ring-4 ${
                         emailErRørt && !emailErGyldig
@@ -230,6 +246,12 @@ export default function KontaktStep() {
                             event.target.value,
                         )
                     }
+                    onBlur={() =>
+                        sporFeltUdfyldt(
+                            "telefon",
+                            Trin.Kontakt,
+                        )
+                    }
                     placeholder="Dit telefonnummer"
                     className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:ring-4 ${
                         telefonManglerOgErPåkrævet
@@ -256,11 +278,18 @@ export default function KontaktStep() {
                     <input
                         type="checkbox"
                         checked={ønskerOpkald}
-                        onChange={(event) =>
+                        onChange={(event) => {
+
                             sætØnskerOpkald(
                                 event.target.checked,
-                            )
-                        }
+                            );
+
+                            sporFeltUdfyldt(
+                                "oensker_opkald",
+                                Trin.Kontakt,
+                            );
+
+                        }}
                         className="mt-0.5 size-4 shrink-0 rounded border-slate-300 text-blue-600 outline-none focus:ring-4 focus:ring-blue-100"
                     />
 

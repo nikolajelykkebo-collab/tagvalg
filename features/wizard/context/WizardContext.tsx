@@ -22,6 +22,11 @@ import {
     Trin,
 } from "../types";
 
+import {
+    sporFeltUdfyldt,
+    sporTrinSkift,
+} from "../lib/analytics";
+
 interface BeregnerContextType {
 
     aktivtTrin: Trin;
@@ -133,6 +138,16 @@ export function BeregnerProvider({
 
     function næsteTrin() {
 
+        const nytTrin =
+            Math.min(
+                aktivtTrin + 1,
+                Trin.Resultat,
+            ) as Trin;
+
+        sporTrinSkift(
+            nytTrin,
+        );
+
         sætAktivtTrin(
             (forrige) =>
                 Math.min(
@@ -144,6 +159,16 @@ export function BeregnerProvider({
     }
 
     function forrigeTrin() {
+
+        const nytTrin =
+            Math.max(
+                aktivtTrin - 1,
+                Trin.Adresse,
+            ) as Trin;
+
+        sporTrinSkift(
+            nytTrin,
+        );
 
         sætAktivtTrin(
             (forrige) =>
@@ -159,6 +184,10 @@ export function BeregnerProvider({
         trin: Trin,
     ) {
 
+        sporTrinSkift(
+            trin,
+        );
+
         sætAktivtTrin(
             trin,
         );
@@ -168,6 +197,15 @@ export function BeregnerProvider({
     function opdaterAdresse(
         adresse: AdresseData,
     ) {
+
+        // opdaterAdresse kaldes altid diskret, når en adresse
+        // er fundet (dropdown-valg eller direkte opslag) —
+        // aldrig løbende pr. tastetryk — så det er trygt at
+        // spore feltet her.
+        sporFeltUdfyldt(
+            "adresse",
+            aktivtTrin,
+        );
 
         sætData(
             (forrige) => ({
