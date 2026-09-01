@@ -29,12 +29,12 @@ export default function Header() {
           ))}
         </nav>
 
-        <a
-          href="tel:31414524"
+        <Link
+          href="/beregner"
           className="inline-flex shrink-0 items-center rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
         >
-          Ring 31 41 45 24
-        </a>
+          Gå til prisberegner
+        </Link>
       </div>
     </header>
   );
