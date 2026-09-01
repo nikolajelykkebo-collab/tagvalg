@@ -3,6 +3,7 @@
 import {
     useEffect,
     useState,
+    type ReactNode,
 } from "react";
 
 import { Calculator, Info } from "lucide-react";
@@ -17,6 +18,157 @@ import {
 
 import { sporFeltUdfyldt } from "../lib/analytics";
 import { Trin } from "../types";
+
+type TagtypeIkonProps = {
+    className?: string;
+};
+
+/**
+ * Fælles tag-silhuet (tagflade + rygning), som de enkelte
+ * tagtype-ikoner tegner deres materiale-mønster oven på.
+ */
+function TagtypeIkonSkabelon(
+    { className, children }: TagtypeIkonProps & { children: ReactNode },
+) {
+
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M3 18h18" />
+            <path d="M4 18 12 7l8 11" />
+            {children}
+        </svg>
+    );
+
+}
+
+function TagpapIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Vandrette baner, som tagpap lægges i.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M9.8 10h4.4" />
+            <path strokeWidth={1.5} d="M8 12.5h8" />
+            <path strokeWidth={1.5} d="M6.2 15h11.6" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+function StålIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Lodrette, ensartede false på en metalplade.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M8 18v-5.5" />
+            <path strokeWidth={1.5} d="M12 18V7" />
+            <path strokeWidth={1.5} d="M16 18v-5.5" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+function EternitIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Bølget, riflet mønster som eternitplader.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M6.2 15q1.45 -1.8 2.9 0t2.9 0t2.9 0" />
+            <path strokeWidth={1.5} d="M9.8 10q1.1 -1.3 2.2 0" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+function BetonteglIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Fladt, ensartet tegl-mønster i lige rækker.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M9.8 10h4.4" />
+            <path strokeWidth={1.5} d="M8 12.5h8" />
+            <path strokeWidth={1.5} d="M6.2 15h11.6" />
+            <path strokeWidth={1.5} d="M12 12.5v2.5" />
+            <path strokeWidth={1.5} d="M9.9 10v2.5" />
+            <path strokeWidth={1.5} d="M14.1 10v2.5" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+function TegltagIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Bølget tegl-mønster af overlappende tagsten.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M6.2 15a1.45 1.45 0 0 0 2.9 0a1.45 1.45 0 0 1 2.9 0a1.45 1.45 0 0 1 2.9 0" />
+            <path strokeWidth={1.5} d="M8 12.5a1.1 1.1 0 0 0 2.2 0a1.1 1.1 0 0 1 2.2 0a1.1 1.1 0 0 1 2.2 0" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+function StråtagIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Struktureret halm-tekstur af korte, tætte strå.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M7 16.5v-3.5" />
+            <path strokeWidth={1.5} d="M9 15.5v-3.5" />
+            <path strokeWidth={1.5} d="M11 15v-4" />
+            <path strokeWidth={1.5} d="M13 15v-4" />
+            <path strokeWidth={1.5} d="M15 15.5v-3.5" />
+            <path strokeWidth={1.5} d="M17 16.5v-3.5" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+function NaturskiferIkon(
+    { className }: TagtypeIkonProps,
+) {
+
+    // Forskudt skifer-/flisemønster.
+    return (
+        <TagtypeIkonSkabelon className={className}>
+            <path strokeWidth={1.5} d="M7 15.5h3.4M12.3 15.5h3.4" />
+            <path strokeWidth={1.5} d="M8.7 12.7h3.4M13.9 12.7h2.2" />
+            <path strokeWidth={1.5} d="M10.3 10.1h3" />
+        </TagtypeIkonSkabelon>
+    );
+
+}
+
+const TAGTYPE_KORT = [
+
+    { værdi: "tagpap", Ikon: TagpapIkon },
+    { værdi: "ståltag", Ikon: StålIkon },
+    { værdi: "eternit", Ikon: EternitIkon },
+    { værdi: "betontegl", Ikon: BetonteglIkon },
+    { værdi: "tegltag", Ikon: TegltagIkon },
+    { værdi: "stråtag", Ikon: StråtagIkon },
+    { værdi: "naturskifer", Ikon: NaturskiferIkon },
+
+] as const;
 
 export default function BeregningStep() {
 
@@ -189,6 +341,69 @@ export default function BeregningStep() {
 
             <div>
 
+                <label className="mb-1 block text-sm font-semibold text-slate-900">
+                    Vælg tagtype
+                </label>
+
+                <p className="mb-3 text-sm text-slate-500">
+                    Vælg den tagtype du ønsker at beregne pris på.
+                </p>
+
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+
+                    {TAGTYPE_KORT.map(({ værdi, Ikon }) => {
+
+                        const erValgt =
+                            valgtTagtype === værdi;
+
+                        return (
+
+                            <button
+                                key={værdi}
+                                type="button"
+                                aria-pressed={erValgt}
+                                onClick={() =>
+                                    opdaterValgtTagtype(
+                                        værdi,
+                                    )
+                                }
+                                className={`flex flex-col items-center gap-2 rounded-2xl border-2 px-3 py-4 text-center transition-colors ${
+                                    erValgt
+                                        ? "border-emerald-600 bg-emerald-50"
+                                        : "border-slate-200 bg-white hover:border-slate-300"
+                                }`}
+                            >
+
+                                <Ikon
+                                    className={`size-8 ${
+                                        erValgt
+                                            ? "text-emerald-700"
+                                            : "text-slate-400"
+                                    }`}
+                                />
+
+                                <span
+                                    className={`text-sm font-semibold ${
+                                        erValgt
+                                            ? "text-emerald-900"
+                                            : "text-slate-900"
+                                    }`}
+                                >
+                                    {TAGTYPE_LABELS[værdi]}
+                                </span>
+
+                            </button>
+
+                        );
+
+                    })}
+
+                </div>
+
+            </div>
+
+            <div>
+
                 <label
                     htmlFor="tagareal"
                     className="mb-2 block text-sm font-semibold text-slate-900"
@@ -235,49 +450,6 @@ export default function BeregningStep() {
                     </p>
 
                 )}
-
-            </div>
-
-            <div>
-
-                <label
-                    htmlFor="onsket-tagtype"
-                    className="mb-2 block text-sm font-semibold text-slate-900"
-                >
-                    Ønsket nyt tag
-                </label>
-
-                <select
-                    id="onsket-tagtype"
-                    value={valgtTagtype}
-                    onChange={(event) =>
-                        opdaterValgtTagtype(
-                            event.target.value,
-                        )
-                    }
-                    className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                >
-
-                    <option value="">
-                        Vælg tagtype
-                    </option>
-
-                    {Object.entries(TAGTYPE_LABELS).map(
-                        ([kode, label]) => (
-
-                            <option
-                                key={kode}
-                                value={kode}
-                            >
-                                {label} (
-                                {TAGPRIS_PR_KVADRATMETER[kode]} kr./m²
-                                )
-                            </option>
-
-                        ),
-                    )}
-
-                </select>
 
             </div>
 
