@@ -13,7 +13,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Tagudregner",
+  title: "Tagvalg – Beregn pris på nyt tag",
   description: "Beregn dit nye tag",
   robots: "noindex, nofollow",
   icons: {
