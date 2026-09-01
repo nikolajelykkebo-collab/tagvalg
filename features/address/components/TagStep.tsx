@@ -19,6 +19,122 @@ import {
 import { sporFeltUdfyldt } from "../../wizard/lib/analytics";
 import { Trin } from "../../wizard/types";
 
+type HældningIkonProps = {
+    className?: string;
+};
+
+function FladtTagIkon(
+    { className }: HældningIkonProps,
+) {
+
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M3 18h18" />
+            <path d="M5 18l3-3h8l3 3" />
+        </svg>
+    );
+
+}
+
+function MiddelTagIkon(
+    { className }: HældningIkonProps,
+) {
+
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M3 18h18" />
+            <path d="M4 18 12 8l8 10" />
+        </svg>
+    );
+
+}
+
+function HøjTagIkon(
+    { className }: HældningIkonProps,
+) {
+
+    return (
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={className}
+        >
+            <path d="M3 18h18" />
+            <path d="M5 18 12 3l7 15" />
+        </svg>
+    );
+
+}
+
+const HÆLDNING_VALG = [
+
+    {
+        værdi: 3,
+        label: "Fladt tag",
+        beskrivelse: "0-5 grader",
+        Ikon: FladtTagIkon,
+    },
+
+    {
+        værdi: 25,
+        label: "Middel",
+        beskrivelse: "Cirka 25 grader",
+        Ikon: MiddelTagIkon,
+    },
+
+    {
+        værdi: 45,
+        label: "Høj",
+        beskrivelse: "Cirka 45 grader",
+        Ikon: HøjTagIkon,
+    },
+
+] as const;
+
+/**
+ * Runder en rå hældning (fx et BBR-estimat) af til den nærmeste
+ * af de tre valgbare hældningskort.
+ */
+function nærmesteHældningValg(
+    rå: number | undefined,
+): number | undefined {
+
+    if (rå === undefined) {
+
+        return undefined;
+
+    }
+
+    return HÆLDNING_VALG.reduce<number>(
+        (nærmest, valg) =>
+            Math.abs(valg.værdi - rå) < Math.abs(nærmest - rå)
+                ? valg.værdi
+                : nærmest,
+        HÆLDNING_VALG[0].værdi,
+    );
+
+}
+
 export default function TagStep() {
 
     const {
@@ -47,16 +163,11 @@ export default function TagStep() {
         );
 
     const [hældning, sætHældning] =
-        useState(
-            data.tag?.hældning?.toString()
-                ??
-            mapStandardHældning(tagtype)?.toString()
-                ?? "",
-        );
-
-    const [hældningErRettetAfBruger, sætHældningErRettetAfBruger] =
-        useState(
-            data.tag?.hældning !== undefined,
+        useState<number | undefined>(
+            () =>
+                data.tag?.hældning !== undefined
+                    ? nærmesteHældningValg(data.tag.hældning)
+                    : nærmesteHældningValg(mapStandardHældning(tagtype)),
         );
 
     const [tilstand, sætTilstand] =
@@ -110,10 +221,7 @@ export default function TagStep() {
                     ? Number(bebyggetAreal)
                     : undefined,
 
-            hældning:
-                hældning
-                    ? Number(hældning)
-                    : undefined,
+            hældning,
 
             tilstand:
                 tilstand || undefined,
@@ -142,10 +250,11 @@ export default function TagStep() {
         // Foreslå en typisk hældning for tagtypen,
         // hvis brugeren ikke selv har angivet en.
         const nyHældning =
-            hældning
+            hældning !== undefined
                 ? hældning
-                : mapStandardHældning(værdi)?.toString()
-                    ?? "";
+                : nærmesteHældningValg(
+                    mapStandardHældning(værdi),
+                );
 
         sætHældning(
             nyHældning,
@@ -164,15 +273,16 @@ export default function TagStep() {
     }
 
     function opdaterHældning(
-        værdi: string,
+        værdi: number,
     ) {
 
         sætHældning(
             værdi,
         );
 
-        sætHældningErRettetAfBruger(
-            true,
+        sporFeltUdfyldt(
+            "haeldning",
+            Trin.Tag,
         );
 
     }
@@ -343,52 +453,76 @@ export default function TagStep() {
 
                 <div>
 
-                    <label
-                        htmlFor="tag-haeldning"
-                        className="mb-2 block text-sm font-semibold text-slate-900"
-                    >
-                        Tagets hældning
+                    <label className="mb-1 block text-sm font-semibold text-slate-900">
+                        Din boligs tagvinkel
                     </label>
 
-                    <div className="flex items-center gap-2">
+                    <p className="mb-3 text-sm text-slate-500">
+                        Vi har automatisk beregnet din tagvinkel.
+                        Er den ikke korrekt skal du rette den til
+                        den korrekte vinkel.
+                    </p>
 
-                        <input
-                            id="tag-haeldning"
-                            type="number"
-                            min="0"
-                            max="90"
-                            step="1"
-                            value={hældning}
-                            onChange={(event) =>
-                                opdaterHældning(
-                                    event.target.value,
-                                )
-                            }
-                            onBlur={() =>
-                                sporFeltUdfyldt(
-                                    "haeldning",
-                                    Trin.Tag,
-                                )
-                            }
-                            className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-                        />
+                    <div className="grid grid-cols-3 gap-3">
 
-                        <span className="shrink-0 text-sm text-slate-500">
-                            grader
-                        </span>
+                        {HÆLDNING_VALG.map(({ værdi, label, beskrivelse, Ikon }) => {
+
+                            const erValgt =
+                                hældning === værdi;
+
+                            return (
+
+                                <button
+                                    key={værdi}
+                                    type="button"
+                                    aria-pressed={erValgt}
+                                    onClick={() =>
+                                        opdaterHældning(
+                                            værdi,
+                                        )
+                                    }
+                                    className={`flex flex-col items-center gap-2 rounded-2xl border-2 px-3 py-4 text-center transition-colors ${
+                                        erValgt
+                                            ? "border-emerald-600 bg-emerald-50"
+                                            : "border-slate-200 bg-white hover:border-slate-300"
+                                    }`}
+                                >
+
+                                    <Ikon
+                                        className={`size-8 ${
+                                            erValgt
+                                                ? "text-emerald-700"
+                                                : "text-slate-400"
+                                        }`}
+                                    />
+
+                                    <span
+                                        className={`text-sm font-semibold ${
+                                            erValgt
+                                                ? "text-emerald-900"
+                                                : "text-slate-900"
+                                        }`}
+                                    >
+                                        {label}
+                                    </span>
+
+                                    <span
+                                        className={`text-xs ${
+                                            erValgt
+                                                ? "text-emerald-700"
+                                                : "text-slate-500"
+                                        }`}
+                                    >
+                                        {beskrivelse}
+                                    </span>
+
+                                </button>
+
+                            );
+
+                        })}
 
                     </div>
-
-                    {!hældningErRettetAfBruger && hældning && (
-
-                        <p className="mt-2 flex items-start gap-1.5 text-sm text-slate-500">
-                            <Info className="mt-0.5 size-3.5 shrink-0" />
-                            Dette er et estimat baseret på den
-                            valgte tagtype. Ret værdien, hvis du
-                            kender den faktiske hældning.
-                        </p>
-
-                    )}
 
                 </div>
 
