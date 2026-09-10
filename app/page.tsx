@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Header from "../components/Header";
-import Logo from "../components/Logo";
+import Footer from "../components/Footer";
 import HeroAddressSearch from "../features/address/components/HeroAddressSearch";
 
 const fordele = [
@@ -152,16 +152,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 px-6 py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
-          <Logo height={28} />
-
-          <p className="text-xs text-gray-500">
-            © 2026 Tagvalg · CVR 00000000 · Vejle
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
