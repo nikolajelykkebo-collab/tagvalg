@@ -136,6 +136,12 @@ export interface KontaktData {
   telefon: string;
 
   ønskerOpkald: boolean;
+
+  // Cloudflare Turnstile-tokenet ("cf-turnstile-response"), sat
+  // når brugeren har bestået bot-udfordringen på Kontakt-trinnet.
+  // Bruges kun til server-side verifikation — sendes IKKE videre
+  // til Make-webhooken.
+  turnstileToken?: string;
 }
 
 export interface BeregnerData {

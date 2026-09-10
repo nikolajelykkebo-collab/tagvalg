@@ -137,7 +137,7 @@ export default function HeroAddressSearch() {
 
             <form onSubmit={håndterSubmit}>
 
-                <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 transition-colors focus-within:border-emerald-600 focus-within:ring-4 focus-within:ring-emerald-100 sm:flex-row">
+                <div className="flex flex-col gap-2 rounded-[14px] border border-gray-100 bg-white p-2 shadow-lg shadow-gray-900/5 transition-colors focus-within:border-emerald-300 sm:flex-row sm:items-center">
 
                     <input
                         type="text"
@@ -148,13 +148,13 @@ export default function HeroAddressSearch() {
                             )
                         }
                         placeholder="Indtast din adresse, fx Vestergade 12, Vejle"
-                        className="w-full flex-1 bg-white px-5 py-3.5 text-sm text-gray-900 outline-none placeholder:text-gray-400"
+                        className="w-full flex-1 rounded-lg bg-transparent px-4 py-3 text-sm text-gray-900 outline-none placeholder:text-gray-400"
                     />
 
                     <button
                         type="submit"
                         disabled={indlæser || !adresse.trim()}
-                        className="flex items-center justify-center gap-2 bg-emerald-900 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-70"
+                        className="flex shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-900 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-70"
                     >
                         {indlæser ? "Søger..." : "Beregn pris →"}
                     </button>
@@ -165,7 +165,7 @@ export default function HeroAddressSearch() {
 
             {forslag.length > 0 && (
 
-                <ul className="absolute z-10 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 bg-white text-left shadow-lg">
+                <ul className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-gray-200 bg-white text-left shadow-xl">
 
                     {forslag.map((valgmulighed) => (
 

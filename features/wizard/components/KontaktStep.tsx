@@ -2,6 +2,7 @@
 
 import {
     useEffect,
+    useRef,
     useState,
 } from "react";
 
@@ -15,6 +16,30 @@ import { sporFeltUdfyldt } from "../lib/analytics";
 import { Trin } from "../types";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+declare global {
+    interface Window {
+        // Cloudflare Turnstile-scriptets globale API. Widget'en
+        // renderes eksplicit (i stedet for deklarativt via en
+        // "cf-turnstile"-klasse), fordi Kontakt-trinnet mountes
+        // dynamisk langt inde i wizarden — efter at scriptets
+        // egen automatiske DOM-scanning allerede er kørt.
+        turnstile?: {
+            render: (
+                container: HTMLElement,
+                options: {
+                    sitekey: string;
+                    callback?: (token: string) => void;
+                    "expired-callback"?: () => void;
+                    "error-callback"?: () => void;
+                },
+            ) => string;
+            remove: (
+                widgetId: string,
+            ) => void;
+        };
+    }
+}
 
 export default function KontaktStep() {
 
@@ -46,6 +71,21 @@ export default function KontaktStep() {
             data.kontakt.ønskerOpkald,
         );
 
+    const [turnstileToken, sætTurnstileToken] =
+        useState<string | undefined>(
+            data.kontakt.turnstileToken,
+        );
+
+    const turnstileContainerRef =
+        useRef<HTMLDivElement>(
+            null,
+        );
+
+    const turnstileWidgetId =
+        useRef<string | null>(
+            null,
+        );
+
     const emailErGyldig =
         EMAIL_REGEX.test(
             email.trim(),
@@ -62,10 +102,91 @@ export default function KontaktStep() {
             email,
             telefon,
             ønskerOpkald,
+            turnstileToken,
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navn, email, telefon, ønskerOpkald]);
+    }, [navn, email, telefon, ønskerOpkald, turnstileToken]);
+
+    useEffect(() => {
+
+        let annulleret = false;
+
+        // Scriptet indlæses med strategy="afterInteractive" og er
+        // derfor ikke nødvendigvis klar endnu, når Kontakt-trinnet
+        // mountes — vi prøver derfor igen kortvarigt, indtil
+        // window.turnstile findes.
+        function forsøgAtRendereWidget() {
+
+            if (annulleret) {
+                return;
+            }
+
+            if (!turnstileContainerRef.current) {
+                return;
+            }
+
+            if (!window.turnstile) {
+
+                setTimeout(
+                    forsøgAtRendereWidget,
+                    200,
+                );
+
+                return;
+
+            }
+
+            if (turnstileWidgetId.current) {
+                return;
+            }
+
+            turnstileWidgetId.current =
+                window.turnstile.render(
+                    turnstileContainerRef.current,
+                    {
+                        sitekey:
+                            process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+                                ?? "",
+
+                        callback: (token) =>
+                            sætTurnstileToken(
+                                token,
+                            ),
+
+                        "expired-callback": () =>
+                            sætTurnstileToken(
+                                undefined,
+                            ),
+
+                        "error-callback": () =>
+                            sætTurnstileToken(
+                                undefined,
+                            ),
+                    },
+                );
+
+        }
+
+        forsøgAtRendereWidget();
+
+        return () => {
+
+            annulleret = true;
+
+            if (turnstileWidgetId.current && window.turnstile) {
+
+                window.turnstile.remove(
+                    turnstileWidgetId.current,
+                );
+
+                turnstileWidgetId.current = null;
+
+            }
+
+        };
+
+    }, []);
 
     function opdaterNavn(
         værdi: string,
@@ -328,6 +449,8 @@ export default function KontaktStep() {
                 </p>
 
             </div>
+
+            <div ref={turnstileContainerRef} />
 
         </section>
 

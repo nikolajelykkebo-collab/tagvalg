@@ -24,6 +24,84 @@ interface FladtLead {
     oensker_opkald: boolean | null;
 }
 
+/**
+ * Verificerer et Cloudflare Turnstile-token server-side.
+ * Kaldes altid før et lead sendes videre til Make, så bots ikke
+ * kan udfylde/afsende formularen. `clientIp` er valgfri (bruges
+ * kun til Cloudflares egen risikovurdering).
+ */
+async function verificerTurnstile(
+    token: string,
+    clientIp: string | null,
+): Promise<boolean> {
+
+    const secretKey =
+        process.env.TURNSTILE_SECRET_KEY;
+
+    if (!secretKey) {
+
+        console.error(
+            "TURNSTILE_SECRET_KEY er ikke sat.",
+        );
+
+        return false;
+
+    }
+
+    const body =
+        new URLSearchParams();
+
+    body.set(
+        "secret",
+        secretKey,
+    );
+
+    body.set(
+        "response",
+        token,
+    );
+
+    if (clientIp) {
+
+        body.set(
+            "remoteip",
+            clientIp,
+        );
+
+    }
+
+    try {
+
+        const svar =
+            await fetch(
+                "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body,
+                },
+            );
+
+        const resultat: { success: boolean } =
+            await svar.json();
+
+        return resultat.success === true;
+
+    } catch (error) {
+
+        console.error(
+            "Fejl ved kald til Turnstile siteverify:",
+            error,
+        );
+
+        return false;
+
+    }
+
+}
+
 // Bygger et fladt objekt med ASCII-navngivne felter ud fra det
 // indlejrede data-objekt, så det matcher direkte op med
 // kolonnerne i Airtable. Manglende/null/undefined felter sendes
@@ -116,6 +194,50 @@ export async function POST(
 
         const lead: BeregnerData =
             await request.json();
+
+        const turnstileToken =
+            lead.kontakt?.turnstileToken;
+
+        if (!turnstileToken) {
+
+            return NextResponse.json(
+                {
+                    error: "Bot-verifikation mangler.",
+                    kode: "turnstile_fejlet",
+                },
+                {
+                    status: 400,
+                },
+            );
+
+        }
+
+        const klientIp =
+            request.headers
+                .get("x-forwarded-for")
+                ?.split(",")[0]
+                ?.trim()
+                ?? null;
+
+        const turnstileErGyldig =
+            await verificerTurnstile(
+                turnstileToken,
+                klientIp,
+            );
+
+        if (!turnstileErGyldig) {
+
+            return NextResponse.json(
+                {
+                    error: "Bot-verifikation fejlede.",
+                    kode: "turnstile_fejlet",
+                },
+                {
+                    status: 403,
+                },
+            );
+
+        }
 
         const fladtLead =
             byggFladtLead(

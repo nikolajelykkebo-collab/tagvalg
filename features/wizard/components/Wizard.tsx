@@ -70,6 +70,19 @@ export default function Wizard() {
 
             if (!svar.ok) {
 
+                const fejlSvar =
+                    await svar.json().catch(
+                        () => null,
+                    );
+
+                if (fejlSvar?.kode === "turnstile_fejlet") {
+
+                    throw new Error(
+                        "turnstile_fejlet",
+                    );
+
+                }
+
                 throw new Error(
                     `Webhook svarede med status ${svar.status}.`,
                 );
@@ -90,7 +103,9 @@ export default function Wizard() {
             );
 
             sætSendFejl(
-                "Der opstod en fejl — prøv igen.",
+                error instanceof Error && error.message === "turnstile_fejlet"
+                    ? "Vi kunne ikke bekræfte at du ikke er en robot — prøv igen."
+                    : "Der opstod en fejl — prøv igen.",
             );
 
         } finally {
@@ -183,13 +198,14 @@ export default function Wizard() {
 
     const kanGåVidere =
         aktivtTrin === Trin.Resultat
-            ? !senderLead && !leadErSendt
+            ? !senderLead && !leadErSendt && Boolean(data.kontakt.turnstileToken)
             : aktivtTrin === Trin.Kontakt
                 ? EMAIL_REGEX.test(data.kontakt.email.trim())
                     && (
                         !data.kontakt.ønskerOpkald
                             || data.kontakt.telefon.trim() !== ""
                     )
+                    && Boolean(data.kontakt.turnstileToken)
                 : aktivtTrin === Trin.Adresse
                     ? !adresseSøgning.indlæser
                         && (

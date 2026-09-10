@@ -1,27 +1,44 @@
 import Link from "next/link";
 
+import {
+  BadgeCheck,
+  Calculator,
+  CircleCheck,
+  Gift,
+  Layers,
+  Lightbulb,
+  MessagesSquare,
+} from "lucide-react";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import FaqSection from "../components/FaqSection";
 import HeroAddressSearch from "../features/address/components/HeroAddressSearch";
+
+const tillidsindikatorer = [
+  "100% gratis",
+  "Under 1 minut",
+  "Ingen forpligtelser",
+];
 
 const fordele = [
   {
-    nummer: "01",
     titel: "Automatisk beregning",
     tekst:
       "Få en pris du faktisk kan bruge som udgangspunkt for dit budget — beregnet direkte ud fra din adresse.",
+    Ikon: Calculator,
   },
   {
-    nummer: "02",
     titel: "100% gratis",
     tekst:
       "Brug beregneren så mange gange du vil, helt uden beregning. Gem og send dine overslag videre.",
+    Ikon: Gift,
   },
   {
-    nummer: "03",
     titel: "Alle tagtyper",
     tekst:
       "Tegl, beton, stål eller tagpap — beregneren dækker de mest almindelige tagløsninger på markedet.",
+    Ikon: Layers,
   },
 ];
 
@@ -30,16 +47,19 @@ const styrker = [
     titel: "Høj kvalitet",
     tekst:
       "Dedikeret team med svendebrev og 30 års samlet erfaring i tagbranchen.",
+    Ikon: BadgeCheck,
   },
   {
     titel: "Personlig service",
     tekst:
       "Løbende dialog gennem hele forløbet, så du undgår unødvendige overraskelser.",
+    Ikon: MessagesSquare,
   },
   {
     titel: "God rådgivning",
     tekst:
       "Vi starter altid med grundig rådgivning, så vi sammen kan lægge den rette plan.",
+    Ikon: Lightbulb,
   },
 ];
 
@@ -49,8 +69,21 @@ export default function Page() {
       <Header />
 
       {/* Hero */}
-      <section className="px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-2xl text-center">
+      <section className="relative bg-gradient-to-b from-emerald-50 to-white px-6 py-24 sm:py-32">
+        {/* Blobbene skal klippes til sektionens kant, men uden at
+            klippe adresse-dropdown'en herunder — derfor sidder
+            overflow-hidden på denne separate baggrundslag-wrapper
+            i stedet for på selve sektionen. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <div className="absolute -left-24 -top-24 size-72 rounded-full bg-emerald-200/40 blur-3xl sm:size-96" />
+
+          <div className="absolute -bottom-24 -right-24 size-72 rounded-full bg-emerald-200/40 blur-3xl sm:size-96" />
+        </div>
+
+        <div className="relative mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center rounded-full bg-emerald-50 px-4 py-1.5 text-xs font-semibold text-emerald-700">
             100% gratis · Uforpligtende
           </span>
@@ -69,9 +102,17 @@ export default function Page() {
             <HeroAddressSearch />
           </div>
 
-          <p className="mt-5 text-xs font-medium text-gray-400">
-            Ingen forpligtelser · Svar med det samme · Bruges af 1.000+ boligejere
-          </p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {tillidsindikatorer.map((tekst) => (
+              <span
+                key={tekst}
+                className="flex items-center gap-1.5 text-xs font-medium text-gray-500"
+              >
+                <CircleCheck className="size-4 text-emerald-600" />
+                {tekst}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -85,11 +126,11 @@ export default function Page() {
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
             {fordele.map((fordel) => (
               <div
-                key={fordel.nummer}
-                className="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm"
+                key={fordel.titel}
+                className="rounded-[20px] border border-gray-100 bg-gray-50 p-7 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
-                <span className="inline-flex size-9 items-center justify-center rounded-lg bg-emerald-100 text-sm font-bold text-emerald-800">
-                  {fordel.nummer}
+                <span className="inline-flex size-[52px] items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-700 text-white">
+                  <fordel.Ikon className="size-6" />
                 </span>
 
                 <h3 className="mt-5 text-lg font-bold text-gray-900">
@@ -106,16 +147,23 @@ export default function Page() {
       </section>
 
       {/* Hvorfor skal du vælge os */}
-      <section id="om-os" className="bg-white px-6 py-20 sm:py-24">
+      <section id="om-os" className="bg-emerald-50 px-6 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl">
-          <p className="text-center text-xs font-semibold uppercase tracking-widest text-gray-500">
+          <h2 className="text-center text-2xl font-bold text-gray-900 sm:text-3xl">
             Hvorfor skal du vælge os?
-          </p>
+          </h2>
 
-          <div className="mt-10 grid grid-cols-1 gap-10 sm:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-3">
             {styrker.map((styrke) => (
-              <div key={styrke.titel}>
-                <h3 className="text-lg font-bold text-gray-900">
+              <div
+                key={styrke.titel}
+                className="flex flex-col items-center text-center"
+              >
+                <span className="inline-flex size-16 items-center justify-center rounded-full bg-white shadow-md">
+                  <styrke.Ikon className="size-7 text-emerald-600" />
+                </span>
+
+                <h3 className="mt-5 text-lg font-bold text-gray-900">
                   {styrke.titel}
                 </h3>
 
@@ -128,8 +176,10 @@ export default function Page() {
         </div>
       </section>
 
+      <FaqSection />
+
       {/* CTA-banner */}
-      <section className="px-6 pb-20 sm:pb-24">
+      <section className="px-6 py-20 sm:py-24">
         <div className="mx-auto max-w-6xl rounded-3xl bg-emerald-900 px-8 py-12 sm:px-12">
           <div className="flex flex-col items-center gap-8 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>

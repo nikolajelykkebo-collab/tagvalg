@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 import Header from "../../components/Header";
 import Wizard from "../../features/wizard/components/Wizard";
 
@@ -6,6 +8,13 @@ export default function BeregnerPage() {
         <>
             <Header />
             <Wizard />
+
+            {/* Cloudflare Turnstile — bruges på Kontakt-trinnet til
+                bot-beskyttelse, før leadet kan sendes til Make. */}
+            <Script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                strategy="afterInteractive"
+            />
         </>
     );
 }
