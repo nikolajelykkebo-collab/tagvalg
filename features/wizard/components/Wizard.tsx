@@ -228,41 +228,57 @@ export default function Wizard() {
                     : "Næste";
 
     return (
-        <main className="calculator-shell mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-8 sm:px-6 sm:py-12">
+        <div className="relative bg-gradient-to-b from-emerald-50 to-white">
 
-            <ProgressBar
-                aktivtTrin={aktivtTrin}
-                antalTrin={trin.length}
-            />
+            {/* Bløde baggrunds-blobs, samme stil som forsidens hero.
+                Ligger i sit eget klippede lag, så de ikke risikerer
+                at klippe wizard-indhold (fx adresse-forslag) af. */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 overflow-hidden"
+            >
+                <div className="absolute -left-24 -top-24 size-72 rounded-full bg-emerald-200/40 blur-3xl sm:size-96" />
 
-            <div className="calculator-panel flex-1 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
-
-                <StepRenderer
-                    aktivtTrin={aktivtTrin}
-                    adresseSøgning={adresseSøgning}
-                />
-
+                <div className="absolute -bottom-24 -right-24 size-72 rounded-full bg-emerald-200/40 blur-3xl sm:size-96" />
             </div>
 
-            {aktivtTrin === Trin.Resultat && sendFejl && (
+            <main className="calculator-shell relative mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-8 sm:px-6 sm:py-12">
 
-                <p className="mt-4 text-center text-sm text-red-600">
-                    {sendFejl}
-                </p>
+                <ProgressBar
+                    aktivtTrin={aktivtTrin}
+                    antalTrin={trin.length}
+                />
 
-            )}
+                <div className="calculator-panel flex-1 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
 
-            <WizardFooter
-                kanGåTilbage={aktivtTrin > 0}
-                kanGåVidere={kanGåVidere}
-                næsteKnapTekst={næsteKnapTekst}
-                erSidsteTrin={
-                    aktivtTrin ===
-                    trin.length - 1
-                }
-                vedTilbage={forrigeTrin}
-                vedNæste={håndterNæste}
-            />
-        </main>
+                    <StepRenderer
+                        aktivtTrin={aktivtTrin}
+                        adresseSøgning={adresseSøgning}
+                    />
+
+                </div>
+
+                {aktivtTrin === Trin.Resultat && sendFejl && (
+
+                    <p className="mt-4 text-center text-sm text-red-600">
+                        {sendFejl}
+                    </p>
+
+                )}
+
+                <WizardFooter
+                    kanGåTilbage={aktivtTrin > 0}
+                    kanGåVidere={kanGåVidere}
+                    næsteKnapTekst={næsteKnapTekst}
+                    erSidsteTrin={
+                        aktivtTrin ===
+                        trin.length - 1
+                    }
+                    vedTilbage={forrigeTrin}
+                    vedNæste={håndterNæste}
+                />
+            </main>
+
+        </div>
     );
 }

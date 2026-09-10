@@ -74,6 +74,16 @@ export default function ResultatStep() {
                         <dd className="font-medium text-slate-900">{data.tag?.areal ?? "-"} m²</dd>
                     </div>
 
+                    <div className="flex justify-between border-b border-slate-100 py-1.5 text-sm sm:justify-start sm:gap-2">
+                        <dt className="text-slate-500">Tilstand</dt>
+                        <dd className="font-medium text-slate-900">{data.tag?.tilstand ?? "-"}</dd>
+                    </div>
+
+                    <div className="flex justify-between border-b border-slate-100 py-1.5 text-sm sm:justify-start sm:gap-2">
+                        <dt className="text-slate-500">Tidshorisont</dt>
+                        <dd className="font-medium text-slate-900">{data.tag?.tidshorisont ?? "-"}</dd>
+                    </div>
+
                 </dl>
 
             </div>
