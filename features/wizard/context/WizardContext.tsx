@@ -205,6 +205,7 @@ export function BeregnerProvider({
         sporFeltUdfyldt(
             "adresse",
             aktivtTrin,
+            adresse.tekst,
         );
 
         sætData(

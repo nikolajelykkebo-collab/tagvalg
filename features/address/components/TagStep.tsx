@@ -236,6 +236,7 @@ export default function TagStep() {
 
     function opdaterTagtype(
         værdi: string,
+        label: string,
     ) {
 
         sætTagtype(
@@ -245,6 +246,7 @@ export default function TagStep() {
         sporFeltUdfyldt(
             "tagtype",
             Trin.Tag,
+            label,
         );
 
         // Foreslå en typisk hældning for tagtypen,
@@ -274,6 +276,7 @@ export default function TagStep() {
 
     function opdaterHældning(
         værdi: number,
+        label: string,
     ) {
 
         sætHældning(
@@ -283,6 +286,7 @@ export default function TagStep() {
         sporFeltUdfyldt(
             "haeldning",
             Trin.Tag,
+            label,
         );
 
     }
@@ -298,6 +302,7 @@ export default function TagStep() {
         sporFeltUdfyldt(
             "tilstand",
             Trin.Tag,
+            værdi,
         );
 
     }
@@ -313,6 +318,7 @@ export default function TagStep() {
         sporFeltUdfyldt(
             "tidshorisont",
             Trin.Tag,
+            værdi,
         );
 
     }
@@ -360,6 +366,8 @@ export default function TagStep() {
                         onChange={(event) =>
                             opdaterTagtype(
                                 event.target.value,
+                                event.target.selectedOptions[0]?.text
+                                    ?? event.target.value,
                             )
                         }
                         className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
@@ -429,6 +437,7 @@ export default function TagStep() {
                                 sporFeltUdfyldt(
                                     "bebygget_areal",
                                     Trin.Tag,
+                                    bebyggetAreal,
                                 )
                             }
                             className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
@@ -479,6 +488,7 @@ export default function TagStep() {
                                     onClick={() =>
                                         opdaterHældning(
                                             værdi,
+                                            label,
                                         )
                                     }
                                     className={`flex flex-col items-center gap-2 rounded-2xl border-2 px-3 py-4 text-center transition-colors ${
