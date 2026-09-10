@@ -201,10 +201,13 @@ export function BeregnerProvider({
         // opdaterAdresse kaldes altid diskret, når en adresse
         // er fundet (dropdown-valg eller direkte opslag) —
         // aldrig løbende pr. tastetryk — så det er trygt at
-        // spore feltet her.
+        // spore feltet her. Selve adressen er personhenførbar
+        // data og sendes derfor aldrig som værdi (håndteret
+        // centralt i sporFeltUdfyldt) — kun at et valg er sket.
         sporFeltUdfyldt(
             "adresse",
             aktivtTrin,
+            true,
         );
 
         sætData(

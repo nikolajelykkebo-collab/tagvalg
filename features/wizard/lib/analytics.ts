@@ -52,16 +52,30 @@ export function sporTrinSkift(
  * Kaldes ved en afgrænset handling (fx et valg i en dropdown,
  * et flueben, eller når et tekstfelt mister fokus) — aldrig
  * for hvert tastetryk.
+ *
+ * `værdi` er den valgte/indtastede værdi. For felter med
+ * personoplysninger skal der IKKE sendes den faktiske værdi:
+ *
+ * - "adresse" er personhenførbar data og sendes derfor ALTID
+ *   som boolean `true` (ikke den faktiske adressetekst) — håndteret
+ *   centralt her, så det gælder alle steder adressen spores.
+ * - navn/e-mail/telefon skal tilsvarende kun sendes som boolean
+ *   (om feltet er udfyldt) fra kaldestedet — se KontaktStep.
  */
 export function sporFeltUdfyldt(
     felt: string,
     trin: Trin,
+    værdi: unknown,
 ): void {
 
     skubDataLayerEvent({
         event: "wizard_felt_udfyldt",
         felt,
         trin: trinInfo[trin].label,
+        værdi:
+            felt === "adresse"
+                ? true
+                : værdi,
     });
 
 }

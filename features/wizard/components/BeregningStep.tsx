@@ -310,6 +310,8 @@ export default function BeregningStep() {
         sporFeltUdfyldt(
             "valgt_tagtype",
             Trin.Beregning,
+            TAGTYPE_LABELS[værdi]
+                ?? værdi,
         );
 
     }
@@ -438,6 +440,7 @@ export default function BeregningStep() {
                             sporFeltUdfyldt(
                                 "tagareal",
                                 Trin.Beregning,
+                                tagareal,
                             )
                         }
                         className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-100"

@@ -3,7 +3,6 @@ import Link from "next/link";
 import Logo from "./Logo";
 
 const navLinks = [
-  { href: "#saadan-virker-det", label: "Sådan virker det" },
   { href: "#om-os", label: "Om os" },
   { href: "/beregner", label: "Priser" },
 ];
@@ -29,12 +28,21 @@ export default function Header() {
           ))}
         </nav>
 
-        <Link
-          href="/beregner"
-          className="inline-flex shrink-0 items-center rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
-        >
-          Gå til prisberegner
-        </Link>
+        <div className="flex shrink-0 items-center gap-5">
+          <Link
+            href="/sadan-virker-det"
+            className="hidden text-sm font-medium text-gray-600 transition-colors hover:text-emerald-700 md:inline-block"
+          >
+            Sådan virker det
+          </Link>
+
+          <Link
+            href="/beregner"
+            className="inline-flex shrink-0 items-center rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
+          >
+            Gå til prisberegner
+          </Link>
+        </div>
       </div>
     </header>
   );

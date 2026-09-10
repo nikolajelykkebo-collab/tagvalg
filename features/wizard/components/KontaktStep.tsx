@@ -172,6 +172,9 @@ export default function KontaktStep() {
                         sporFeltUdfyldt(
                             "navn",
                             Trin.Kontakt,
+                            // Ingen personoplysninger til GTM —
+                            // kun om feltet er udfyldt.
+                            navn.trim() !== "",
                         )
                     }
                     placeholder="Dit navn"
@@ -207,6 +210,9 @@ export default function KontaktStep() {
                         sporFeltUdfyldt(
                             "email",
                             Trin.Kontakt,
+                            // Ingen personoplysninger til GTM —
+                            // kun om feltet er udfyldt.
+                            email.trim() !== "",
                         );
 
                     }}
@@ -250,6 +256,9 @@ export default function KontaktStep() {
                         sporFeltUdfyldt(
                             "telefon",
                             Trin.Kontakt,
+                            // Ingen personoplysninger til GTM —
+                            // kun om feltet er udfyldt.
+                            telefon.trim() !== "",
                         )
                     }
                     placeholder="Dit telefonnummer"
@@ -287,6 +296,7 @@ export default function KontaktStep() {
                             sporFeltUdfyldt(
                                 "oensker_opkald",
                                 Trin.Kontakt,
+                                event.target.checked,
                             );
 
                         }}
